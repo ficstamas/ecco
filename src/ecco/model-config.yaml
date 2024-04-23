@@ -21,7 +21,7 @@ gpt2-xl:
         - 'mlp\.c_proj'
     token_prefix: 'Ġ'
     partial_token_prefix: ''
-distilgpt2:
+distilbert/distilgpt2:
     embedding: "transformer.wte.weight"
     type: 'causal'
     activations:
