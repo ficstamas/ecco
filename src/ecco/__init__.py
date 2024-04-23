@@ -88,7 +88,9 @@ def from_pretrained(hf_model_id: str,
         'collect_activations_flag': activations,
         'collect_activations_layer_nums': activations_layer_nums,
         'verbose': verbose,
-        'gpu': gpu}
+        'gpu': gpu,
+        'output_hidden_states': hidden_states
+    }
 
     lm = LM(model, tokenizer, **lm_kwargs)
 

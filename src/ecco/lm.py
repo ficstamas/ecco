@@ -46,7 +46,8 @@ class LM(object):
                  collect_activations_flag: Optional[bool] = False,
                  collect_activations_layer_nums: Optional[List[int]] = None,  # None --> collect for all layers
                  verbose: Optional[bool] = True,
-                 gpu: Optional[bool] = True
+                 gpu: Optional[bool] = True,
+                 output_hidden_states: Optional[bool] = False
                  ):
         """
         Creates an LM object given a model and tokenizer.
@@ -64,6 +65,7 @@ class LM(object):
         """
         self.model_name = model_name
         self.model = model
+        self.output_hidden_states = output_hidden_states
         if torch.cuda.is_available() and gpu:
             self.model = model.to('cuda')
 
@@ -226,6 +228,11 @@ class LM(object):
 
         # Get model output
         self._remove_hooks() # deactivate hooks: we will run them for the last model forward only
+
+
+        if "gpt2" in self.model_name:  # GPT2 accepts 'output_hidden_states' in the 'forward' function, not the Config
+            generate_kwargs['output_hidden_states'] = self.output_hidden_states
+
         output = self.model.generate(
             input_ids=input_ids,
             attention_mask=attention_mask,
